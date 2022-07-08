@@ -1,0 +1,23 @@
+{% extends "ProyectoWebApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div style="color: white;" class="text-align mx-auto">Este es tu perfil:
+    <p class="text-align mx-auto">Usuario: {{user.username}}</p>
+    <p>Nombre: {{user.first_name}}</p>
+    <p>Apellido: {{user.last_name}}</p>
+    <p>Correo: {{user.email}}</p>
+    <p>Grupo: {{user.groups}}</p>
+    <p>Permisos: {{user.permissions}}</p>
+    <p>Es staff? {{user.is_staff}}</p>
+    <p>Es activo? {{user.is_active}}</p>
+    <p>Es admin? {{user.is_superuser}}</p>
+    <p>Ultimo login: {{user.last_login}}</p>
+    <p>Fecha de entrada: {{user.data_joined}}</p>
+    <p>Test</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "ProyectoWebApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for producto in productos %}
+            {% if producto.disponibilidad %}
+                <div class="col-md-3">
+                    <div class="card my-3 mx-1">  <!-- card -->
+                        <span class="border rounded">
+                            <img class="card-img-top img-fluid" src="{{producto.imagen.url}}" alt="">
+                        </span>
+                            <div class="card-body d-flex align-items-center justify-content-center flex-column">     <!-- card-body -->
+                                <p class="card-title h5">{{producto.nombre}}</p>    <!-- card-title -->
+                                <p class="card-text h6">{{producto.precio}}&nbsp;$</p>         <!-- card-text -->
+                            </div>
+                            {% if request.user.is_authenticated %}
+                            <div class="card-footer d-flex align-items-center justify-content-center flex-column">       <!-- card-footer -->
+                                <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-success">Agregar al carro</a>
+                            </div>
+                            {% else %}
+                            <div class="card-footer d-flex align-items-center justify-content-center flex-column">       <!-- card-footer -->
+                                <a href="{% url 'logear' %}" class="btn btn-success">Login</a>
+                            </div>
+                            {% endif %}
+                    </div>
+                </div>
+            {% else %}
+            <div class="col-md-3">
+                <div class="card my-3 mx-1">  <!-- card -->
+                    <span class="border rounded">
+                        <img class="card-img-top img-fluid" src="{{producto.imagen.url}}" alt="">
+                    </span>
+                        <div class="card-body d-flex align-items-center justify-content-center flex-column">     <!-- card-body -->
+                            <p class="card-title h5">{{producto.nombre}}</p>    <!-- card-title -->
+                            <p class="card-text h6">{{producto.precio}}&nbsp;$</p>         <!-- card-text -->
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-center flex-column">       <!-- card-footer -->
+                            <p class="btn btn-danger mb-0">No disponible</p>
+                        </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div> 
+</div>
+{% endblock %}

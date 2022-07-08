@@ -1,0 +1,208 @@
+<html>
+
+<head>
+
+    {% load static %}
+    <!-- Scripts -->
+
+    <!-- Bootstrap -->
+    <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+     <!-- Fonts -->
+    
+     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
+     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+     
+
+    <!-- Styles -->
+    <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
+    <title>ProyectoWeb</title>
+    <link rel="icon" href="{% static 'ProyectoWebApp/img/constelacion.png' %}">
+</head>
+
+<body>
+
+    <h1 class="site-heading text-center text-white d-none d-lg-block">
+      
+        <span class="site-heading-lower">Gestión de Pedidos</span>
+      </h1>
+
+      <div style= "text-align: right; margin-right: 100px; color: white">
+      <!--
+      {% if user.is_authenticated %}
+      Hola {{user.username}} &nbsp; &nbsp; <a href="{% url 'cerrar_sesion' %}" style="color: white;">Cerrar Sesion</a>
+
+      {% else %}
+
+        <a href="{% url 'logear' %}" style="text-decoration: none; color: white">Login</a> &nbsp; &nbsp; <a href="{% url 'Autenticacion' %}">Registrate</a>
+
+      {% endif %}
+      -->
+      </div>
+      
+
+ <!-- Navbar -->
+ <nav class="navbar navbar-expand-lg navbar-dark py-lg-4 mx-auto" id="mainNav" style="max-width: 1200px">
+    <div class="container-fluid">
+      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="{% url 'Home' %}">Gestión de Pedidos</a>
+    <!-- Usuario -->
+      {% if user.is_authenticated %}
+      <div class="card d-flex align-items-center justify-content-center mx-auto">
+        <div class="row">
+          <div class="col-md-12">
+              <div class="mx-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-expanded="true">
+                <img class="nav-img" src="{{user.profile.imagen.url}}" alt="">
+              </div>
+              <div class="collapse" id="navbarResponsive">
+                <a class="card-text text-align" href="{% url 'perfil' %}">{{user.username}}</a>
+                <a class="card-text" href="{% url 'cerrar_sesion' %}" style="color: black;">
+                  Cerrar Sesion
+                </a>
+              </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="card d-flex align-items-center justify-content-center mx-auto">
+        <div class="row">
+          <div class="col-md-12">
+              <div class="mx-auto" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-expanded="true">
+                <img class="nav-img mx-auto" src="{% static 'ProyectoWebApp/img/mystery.png' %}" alt="">
+              </div>
+              <div class="collapse mx-auto" id="navbarResponsive">
+                <a class="card-text" href="{% url 'logear' %}" style="color: black;">
+                  <p class="card-text">Login</p>
+                </a>
+                <a class="card-text" href="{% url 'Autenticacion' %}" style="color: black;">
+                  <p class="card-text">Registrate</p>
+                </a>
+              </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    <!-- Nav -->
+      <button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#usuarioNavbarResponsive">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="usuarioNavbarResponsive">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item {% if request.path == '/' %}active{% endif %} px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'Home' %}">Inicio</a>
+          </li>
+          <li class="nav-item {% if request.path == '/servicios/' %}active{% endif %} px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'Servicios' %}">Servicios</a>
+          </li>
+          <li class="nav-item {% if request.path == '/tienda/' %}active{% endif %} px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'Tienda' %}">Tienda</a>
+          </li>
+          <li class="nav-item {% if request.path == '/contacto/' %}active{% endif %} px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'Contacto' %}">Contacto</a>
+          </li>
+          <li class="nav-item {% if request.path|slice:':6' == '/blog/' %}active{% endif %} px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'Blog' %}">Blog</a>
+          </li>
+        </ul>
+      </div>
+      {% if request.session.carro.items %}
+        <div>
+        <a class="mx-auto" href="{% url 'Carro' %}">
+          <div class="row">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <circle cx="6" cy="19" r="2" />
+              <circle cx="17" cy="19" r="2" />
+              <path d="M17 17h-11v-14h-2" />
+              <path d="M6 5l14 1l-1 7h-13" />
+            </svg>
+        </a>
+        {% if request.session.carro.items and request.path != '/tienda/carroweb' %}
+            <a href="{% url 'Carro' %}">
+              <span class="badge badge-danger">
+                {{producto_total_carro}}
+              </span>
+            </a>
+        </div>
+        {% else %}
+
+        {% endif %}
+      {% else %}
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-x" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff2825" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <circle cx="6" cy="19" r="2" />
+        <circle cx="17" cy="19" r="2" />
+        <path d="M17 17h-11v-14h-2" />
+        <path d="M6 5l7.999 .571m5.43 4.43l-.429 2.999h-13" />
+        <path d="M17 3l4 4" />
+        <path d="M21 3l-4 4" />
+      </svg>
+      {% endif %}
+    </div>
+  </nav>
+  <!-- Diarias -->
+  <div class="modal fade" id="diarias" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Diarias</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Hacer el perfil de usuario con su enlace
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Contenido Cambiante -->
+  {% block content %}
+
+
+
+  {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer text-faded text-center py-5 mx-auto" style="max-width: 1200px;">
+      <div class="container">
+        <p class="m-0">
+	        <a href="#" class="link">
+	          <span class="fa-stack fa-lg">
+	            <i class="fa fa-circle fa-stack-2x"></i>
+	            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+	          </span>
+	        </a>
+	        <a href="#" class="link">
+	          <span class="fa-stack fa-lg">
+	            <i class="fa fa-circle fa-stack-2x"></i>
+	            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+	          </span>
+	        </a>
+	        <a href="#" class="link">
+	          <span class="fa-stack fa-lg">
+	            <i class="fa fa-circle fa-stack-2x"></i>
+	            <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+	          </span>
+	        </a>
+	    </p>
+        <p class="m-0 mbt">
+          <button class="btn btn-primary card-text" data-toggle="modal" data-target="#diarias">Diarias</button>
+        	<a href="sample.html" class="link">Política de privacidad</a> ·
+        	<a href="sample.html" class="link">Aviso legal</a> ·
+        	<a href="sample.html" class="link">Cookies</a>
+		</p>
+        <p class="m-0 mbt1">&copy; Gestión de Pedidos 2022</p>
+      </div>
+	</footer>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'ProyectoWebApp/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'ProyectoWebApp/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>

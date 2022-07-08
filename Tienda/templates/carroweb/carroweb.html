@@ -1,0 +1,61 @@
+{% extends "ProyectoWebApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="max-width: 1200px;">
+    <div class="d-flex align-items-center justify-content-center">
+        <table class="table table-bordered my-3 mx-5" style="color: white;">
+            <thead>
+                    <tr class="text-center">
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                    </tr>
+            </thead>
+            <tbody>
+                {% if request.session.carro.items %}
+                    {% for key, value in request.session.carro.items %}
+                        <tr class="text-center">
+                            <td class="align-middle">
+                                <p>{{value.nombre}}</p>
+                                <img class="" src="{{value.imagen}}" alt="">
+                            </td>
+                            <td class="align-middle">{{value.cantidad}}</td>
+                            <td class="align-middle">
+                                <a href="{% url 'carro:agregar' value.producto_id %}" class="btn btn-sm btn-success">+</a>
+                                <a href="{% url 'carro:restar' value.producto_id %}" class="btn btn-sm btn-success">-</a><br/>
+                                <a href="{% url 'carro:eliminar' value.producto_id %}" class="btn btn-sm btn-success">Eliminar</a>
+                                <br>{{value.precio}} $
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">
+                            <div class="alert alert-danger text-center">
+                                Sin productos
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            <tfoot>
+                {% if request.session.carro.items %}
+                <tr>
+                    <td colspan="3" style="background-color: #20440c; opacity: 0.55; text-align: center;">
+                        Total: {{importe_total_carro}} $
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: center;">
+                        <a href="#" class="btn btn-success">Hacer Pedido</a>
+                    </td>
+                </tr>
+                {% endif %}
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endblock %}
